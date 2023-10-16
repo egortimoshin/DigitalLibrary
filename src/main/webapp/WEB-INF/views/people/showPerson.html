@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<p th:text="${person.getId() + '. ' + person.getName() + ', ' + 'tg: @' + person.getTg()}">VALUE</p>
+<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}" style="display: inline;">
+    <input type="submit" value="Редактировать пользователя">
+</form>
+<form th:method="GET" th:action="@{/people/{id}/delete(id=${person.getId()})}" style="display: inline;">
+    <input type="submit" value="Удалить пользователя" th:if="${books.size() == 0}"}>
+</form>
+<form th:method="GET" th:action="@{/people}" style="display: inline;">
+    <input type="submit" value="Список пользователей">
+</form>
+<div th:if="${books.isEmpty()}">
+    <p>Пользователь не взял ни одной книги</p>
+</div>
+<div th:unless="${books.isEmpty()}">
+    <p>Пользователь взял следующие книги: </p>
+    <div th:each="book : ${books}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}">Book</a>
+        <form th:method="POST" th:action="@{/people/{person_id}/release/{book_id}(person_id=${person.getId()}, book_id=${book.getId()})}" th:object="${book}" style="display: inline;">
+            <input type="submit" value="Освободить книгу">
+        </form>
+    </div>
+</div>
+<br/>
+
+</body>
+</html>
+
+
